@@ -1,2 +1,1 @@
-# cpspp
-Computational Physics: Scientific Programming in Python
+# Computational Physics: Scientific Programming in Python
