@@ -16,7 +16,7 @@ jobs:
               with:
                 environment-file: cpspp.yml
                 miniconda-version: "latest"
-                activate-environment: koulev
+                activate-environment: cpspp
                 python-version: "3.11"
                 channels: conda-forge
                 auto-activate-base: true
