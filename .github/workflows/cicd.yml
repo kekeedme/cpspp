@@ -31,4 +31,5 @@ jobs:
           mamba list
           which python
           python --version
+          make blt
           python test.py
