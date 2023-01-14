@@ -25,10 +25,10 @@ jobs:
           channels: conda-forge
           auto-activate-base: true
           auto-update-conda: true
-        - run: |
-            mamba env list
-            mamba --version
-            mamba list
-            which python
-            python --version
-            python test.py
+      - run: |
+          mamba env list
+          mamba --version
+          mamba list
+          which python
+          python --version
+          python test.py
