@@ -20,3 +20,7 @@ jobs:
                 python-version: "3.11"
                 channels: conda-forge
                 auto-activate-base: true
+            - run: |
+                which python
+                python --version
+                python test.py
