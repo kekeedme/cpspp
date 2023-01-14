@@ -15,7 +15,7 @@ dependencies:
   - pandas
   - pip
   - pylint
-  - python>=3.9
+  - python>=3.11
   - scipy
   - seaborn
   - setuptools

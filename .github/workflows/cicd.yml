@@ -1,0 +1,22 @@
+name: CICD
+
+on: [push]
+
+defaults:
+    run:
+        shell: bash -l {0}
+
+jobs:
+    code_check:
+        name: Build Wheel Artifact
+        runs-on: "ubuntu-latest"
+        steps:
+            - uses: actions/checkout@v3
+            - uses: conda-incubator/setup-miniconda@v2
+              with:
+                environment-file: cpspp.yml
+                miniconda-version: "latest"
+                activate-environment: koulev
+                python-version: "3.11"
+                channels: conda-forge
+                auto-activate-base: true
