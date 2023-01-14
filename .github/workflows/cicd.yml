@@ -11,7 +11,7 @@ jobs:
         name: Run Python
         runs-on: "ubuntu-latest"
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@latest
             - uses: conda-incubator/setup-miniconda@v2
               with:
                 environment-file: cpspp.yml
