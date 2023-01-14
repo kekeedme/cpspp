@@ -8,7 +8,7 @@ defaults:
 
 jobs:
     code_check:
-        name: Build Wheel Artifact
+        name: Run Python
         runs-on: "ubuntu-latest"
         steps:
             - uses: actions/checkout@v3
