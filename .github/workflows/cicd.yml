@@ -3,24 +3,32 @@ name: CICD
 on: [push]
 
 defaults:
-    run:
-        shell: bash -l {0}
+  run:
+    shell: bash -el {0}
 
 jobs:
-    code_check:
-        name: Run Python
-        runs-on: "ubuntu-latest"
-        steps:
-            - uses: actions/checkout@latest
-            - uses: conda-incubator/setup-miniconda@v2
-              with:
-                environment-file: cpspp.yml
-                miniconda-version: "latest"
-                activate-environment: cpspp
-                python-version: "3.11"
-                channels: conda-forge
-                auto-activate-base: true
-            - run: |
-                which python
-                python --version
-                python test.py
+  resource_check:
+    name: PythonRunOn (${{ matrix.os }})
+    runs-on: "ubuntu-latest"
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-latest", "macos-latest", "windows-latest"]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          environment-file: cpspp.yml
+          miniconda-version: "latest"
+          activate-environment: cpspp
+          python-version: "3.11"
+          channels: conda-forge
+          auto-activate-base: true
+          auto-update-conda: true
+        - run: |
+            mamba env list
+            mamba --version
+            mamba list
+            which python
+            python --version
+            python test.py
