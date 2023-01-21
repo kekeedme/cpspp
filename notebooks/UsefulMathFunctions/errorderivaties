@@ -1,0 +1,5 @@
+Do know that you cannot choose the stepsize of numerical derivatives to be arbitrarily small
+Typically, it is recommended to choose a stepsize equal to the 2 time the square root of machine
+epsilon.
+Visit https://en.wikipedia.org/wiki/Numerical_differentiation
+https://math.stackexchange.com/questions/2213240/step-size-h-in-the-incremental-ratio-approximation-of-the-derivative
