@@ -1,17 +1,16 @@
 from math import factorial as fact
-
-
-def nDerivative(function, order, argument, stepsize):
+def nderivative(function, order, argument, stepsize):
     """This function outputs the nth derivative
-    of a user-specified function
-    It takes as input the following:
-    function: a user-defined function
-    order: the order of the derivative of interests
-    argument: the value at which the derivative is to be evaluated
-    stepsize: the size of the intervals, the smaller, the better
-    Author : Kedy Edme
-    Date : Jan 20th 2023"""
+    of a user-specified function.
 
+    It takes as input the following
+    :param function: a user-defined function
+    :param order: the order of the derivative of interests
+    :param argument: the value at which the derivative is to be evaluated
+    :param stepsize: the size of the intervals: warning: to small a value leads to large issues
+    Author : Kedy Edme
+    Date : Jan 20th 2023
+    """
     # declaring the derivative variable and setting it to zero
     derivative = 0
 
