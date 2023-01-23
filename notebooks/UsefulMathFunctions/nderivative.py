@@ -1,4 +1,7 @@
+"""This file contains a function to approximate the nth-derivative of functions."""
 from math import factorial as fact
+
+
 def nderivative(function, order, argument, stepsize):
     """This function outputs the nth derivative
     of a user-specified function.
