@@ -1,4 +1,9 @@
+"""
+    Pa bliye chanje module-docstring sa a tou
+"""
 from math import factorial as fact
+
+
 def nderivative(function, order, argument, stepsize):
     """This function outputs the nth derivative
     of a user-specified function.

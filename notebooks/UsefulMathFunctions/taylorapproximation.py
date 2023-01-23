@@ -1,3 +1,7 @@
+"""
+    Se la a pou mete `Module docstring lan`
+    Ou ke detaye pi byen kisa ki dwe la a.
+"""
 from math import factorial as fact
 
 
