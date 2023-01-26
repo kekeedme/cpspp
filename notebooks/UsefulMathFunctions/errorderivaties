@@ -4,6 +4,8 @@ epsilon (eps).
 Numpy uses float32, the corresponding machine eps is of the order 10**(-19),
 hence I do not recommend going lower than 0.0007 for derivative of order 4. But for higher
 orders, estimates are different
+But very importantly, this is numerics and not analytical, hence your stepsize is inherently
+limited to the spacing between your data points as well.
 
 Visit https://en.wikipedia.org/wiki/Numerical_differentiation
-https://math.stackexchange.com/questions/2213240/step-size-h-in-the-incremental-ratio-approximation-of-the-derivative
+https:/  /math.stackexchange.com/questions/2213240/step-size-h-in-the-incremental-ratio-approximation-of-the-derivative
