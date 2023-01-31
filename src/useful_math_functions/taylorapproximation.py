@@ -1,6 +1,6 @@
 """This file contains a function for taylor approximations."""
 from math import factorial as fact
-from nderivative import nderivative
+from src.useful_math_functions.nderivative import nderivative
 
 
 def taylorapprox(function, argument, a_value, maxorder, stepsize):

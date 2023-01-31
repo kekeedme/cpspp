@@ -32,4 +32,3 @@ jobs:
           which python
           python --version
           make blt
-          python test.py

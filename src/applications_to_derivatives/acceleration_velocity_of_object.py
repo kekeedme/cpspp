@@ -3,11 +3,6 @@ and velocity of an object from a set of coordinates."""
 import numpy as np
 import matplotlib.pyplot as plt
 
-initdata = np.loadtxt("04b_Exercise_velocity_acceleration_data_file.dat")
-# loading the data file and storing it into a variable that contains position vs time
-# only works this way if the file is in the same directory as the python script
-# knowing the structure of your data file is important before you start processing it
-
 
 def velocity(data):
     """
@@ -42,19 +37,24 @@ def velocity(data):
     return np.transpose((data[:, 0], velocityarray))
 
 
-velocityvstime = velocity(initdata)
-# function call and assigning it to variable velocityvstime
+if __name__ == "__main__":
+    # loading the data file and storing it into a variable that contains position vs time
+    # only works this way if the file is in the same directory as the python script
+    # knowing the structure of your data file is important before you start processing it
+    initdata = np.loadtxt("04b_Exercise_velocity_acceleration_data_file.dat")
 
+    velocityvstime = velocity(initdata)
+    # function call and assigning it to variable velocityvstime
 
-plt.scatter(velocityvstime[:, 0], velocityvstime[:, 1])
-plt.xlabel("times [s]")
-plt.ylabel("Velocity [m/s]")
-plt.show()
+    plt.scatter(velocityvstime[:, 0], velocityvstime[:, 1])
+    plt.xlabel("times [s]")
+    plt.ylabel("Velocity [m/s]")
+    plt.show()
 
-# calculating acceleration using central difference
-accelerationvstime = velocity(velocity(initdata))
+    # calculating acceleration using central difference
+    accelerationvstime = velocity(velocity(initdata))
 
-plt.plot(accelerationvstime[:, 0], accelerationvstime[:, 1], "r+")
-plt.xlabel("time [s]")
-plt.ylabel("Acceleration [m/s^2]")
-plt.show()
+    plt.plot(accelerationvstime[:, 0], accelerationvstime[:, 1], "r+")
+    plt.xlabel("time [s]")
+    plt.ylabel("Acceleration [m/s^2]")
+    plt.show()
