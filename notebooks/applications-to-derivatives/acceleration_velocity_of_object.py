@@ -14,7 +14,8 @@ def velocity(data):
     This function will determine the velocity from position vs time data.
     The method of choice will be the central difference method for all except
     first and last point, for which we'll use forward and backward difference
-    respectively
+    respectively (this is not great and will lead to errors in acceleration at these points)
+    the user may choose to omit the first and last points
     The function will return an array of velocity values and
     an array of time values. This is done such that we can call the function
     on itself to get acceleration array later on
