@@ -59,4 +59,4 @@ if __name__ == "__main__":
     plt.legend()
     plt.show()
 
-print(coeff, intercpt, correl)
+    print(coeff, intercpt, correl)
