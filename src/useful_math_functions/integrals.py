@@ -141,3 +141,41 @@ def data_integrationsimp(xdata, ydata):
     integral = terms * (1 / 3) * steps
 
     return integral
+
+
+def adaptivetz(function, avalue, bvalue, nslices, target_error):
+    """This function will perform the integration using adaptive trapezoid method
+    it uses
+    :param: function the function we are integrating
+    :param: avalue and bvalue the upper and lower bound of the interval of interest
+    :param: nslices intial number of slices N
+    :param: target_error the target error we wish to achieve
+    It returns the value of the integral AND the calculated error
+    N.B: This function should be imported with the function_integrationtz() function"""
+
+    # Recall math: (0.5)*I_i_less1 + h * sum_odd(f(a+kh))
+
+    # calculating the first integral using the trapezoid rule (so the I_i_less1 term)
+    integral_1 = function_integrationtz(function, avalue, bvalue, nslices)
+    integral_new = None #will be used and updated later in the while loop
+    actual_error = (1 / 3) * (integral_1 - 0)  # defining a VERY approximate
+    # initial value of the error to be used in the while loop since we have not yet the second I_i
+
+    while abs(actual_error) > target_error:
+        nslices *= 2  # double the number of slices if we have not reached the target
+        width = (bvalue - avalue) / nslices  # redefine the width for each new slice
+        integral_n = function_integrationtz(
+            function, avalue, bvalue, nslices
+        )  # recalculate the ith-1 integral
+        # generating the sum over odd terms
+        sum_adapt = 0
+        for k in range(1, nslices, 2):
+            sum_adapt += function(avalue + k * width)
+
+        integral_new = (0.5 * integral_n) + (
+            width * sum_adapt
+        )  # calculate the ith integral using Ii = (1/2)I_i-1 + hi * sum_odd (f(a+khi))
+        actual_error = (1 / 3) * (
+            integral_new - integral_n
+        )  # recalculate the error from the previous integrals
+    return integral_new, actual_error
