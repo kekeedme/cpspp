@@ -157,7 +157,7 @@ def adaptivetz(function, avalue, bvalue, nslices, target_error):
 
     # calculating the first integral using the trapezoid rule (so the I_i_less1 term)
     integral_1 = function_integrationtz(function, avalue, bvalue, nslices)
-    integral_new = None #will be used and updated later in the while loop
+    integral_new = None  # will be used and updated later in the while loop
     actual_error = (1 / 3) * (integral_1 - 0)  # defining a VERY approximate
     # initial value of the error to be used in the while loop since we have not yet the second I_i
 
@@ -179,3 +179,73 @@ def adaptivetz(function, avalue, bvalue, nslices, target_error):
             integral_new - integral_n
         )  # recalculate the error from the previous integrals
     return integral_new, actual_error
+
+
+def Rombergtz(function, avalue, bvalue, nslices, target_error):
+    """This function will perform the integration using Romberg trapezoid method
+    it uses
+    :param: function the function we are integrating
+    :param: avalue and bvalue the upper and lower bound of the interval of interest
+    :param: nslices intial number of slices N
+    :param: target_error the target error we wish to achieve
+    It returns the value of the integral AND the calculated error
+    N.B: This function should be imported with the function_integrationtz() function"""
+
+    # calculate the integral for the first the very first integral and set it equal to integral_1
+    integral_1_1 = function_integrationtz(function, avalue, bvalue, nslices)
+
+    m_index = 1  # index counting the number of terms in Romberg
+    actual_error = 1  # defining an approximate error
+    inte_list_i_less = (
+        []
+    )  # creating a list to store all necessary Romberg calcs and use them for further calculations
+    inte_list_i_less.append(integral_1_1)  # Add first value in list: R1,1
+    while abs(actual_error) > target_error:
+        nslices *= 2  # update the number of slices by multiplying by two
+        m_index += 1  # increase the Romberg index
+        inte_list_i = (
+            []
+        )  # make a new list that will contain the latest values of the Romberg terms
+        integral_n = function_integrationtz(
+            function, avalue, bvalue, nslices
+        )  # Calculate next integral with twice as many slices as before
+        inte_list_i.append(integral_n)  # add to that new list
+        # loop that will carry out the calc to get higher Romberg terms from previous values of lists, since we already did m=1 we need to start at m=2
+        for m in range(2, m_index + 1):
+            # Calculating the R_i_m+1 term
+            r_i_m_plus_one = inte_list_i[-1] + (
+                (1 / (4 ** (m) - 1)) * (inte_list_i[-1] - inte_list_i_less[m - 2])
+            )  # calculate Romberb Ri,m_plus1
+            inte_list_i.append(
+                r_i_m_plus_one
+            )  # append this value since it will be needed for subsequent Romberg terms
+            actual_error = (1 / (4**m - 1)) * (
+                inte_list_i[-1] - inte_list_i_less[m - 2]
+            )  # update the error on the penultimate value
+        inte_list_i_less = (
+            inte_list_i  # update the first list to become the latest list
+        )
+
+    return inte_list_i_less[-1], actual_error
+
+
+def gaussquad(function, avalue, bvalue, npoints):
+    """This function performs integration using the Gaussian quadrature rule
+    :param: function the function we which to integrate
+    :param: avalue and bvalue the upper and lower bound of the interval of interest
+    :param: npoints which is the number of points required remember polynomial
+    need to be of degree 2N-1"""
+    from gaussxw import gaussxw
+
+    # needed from the gaussxw that calculates the weight and points from Gauss-Legendre
+    # for nth Legendre function. They are ARRAYS
+    x_points, weights = gaussxw(npoints)
+    # Remapping the array of points to suit our interval and therefore rescaling weights as well
+    mapped_x = (0.5) * (bvalue - avalue) * x_points + 0.5 * (bvalue + avalue)
+    mapped_weights = 0.5 * (bvalue - avalue) * weights
+
+    # Calculate the integral
+    integral = 0.0
+    for k in range(npoints):
+        integral += mapped_weights[k] * function(mapped_x[k])
+    return integral
