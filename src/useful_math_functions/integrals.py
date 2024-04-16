@@ -235,9 +235,10 @@ def gaussquad(function, avalue, bvalue, npoints):
     :param: avalue and bvalue the upper and lower bound of the interval of interest
     :param: npoints which is the number of points required remember polynomial
     need to be of degree 2N-1"""
-    from gaussxw import gaussxw
 
     # needed from the gaussxw that calculates the weight and points from Gauss-Legendre
+
+    from src.useful_math_functions.gaussxw import gaussxw
     # for nth Legendre function. They are ARRAYS
     x_points, weights = gaussxw(npoints)
     # Remapping the array of points to suit our interval and therefore rescaling weights as well
