@@ -1,13 +1,13 @@
 """This file contains applications of the integral functions written in the
 integrals.py file"""
-"""Don't necessarily run all the programs if you don't need them, it will make the program slow"""
+#Don't necessarily run all the programs if you don't need them, it will make the program slow
 import numpy as np
 from src.useful_math_functions.integrals import function_integrationtz
 from src.useful_math_functions.integrals import adaptivetz
 from src.useful_math_functions.integrals import Rombergtz
 from src.useful_math_functions.integrals import gaussquad
 from src.useful_math_functions.integrals import function_integrationsimp
-from pylab import plot, show, imshow, xlim, ylim, legend, title, hot, show
+from pylab import plot, show, imshow, xlim, legend, title, hot, show
 
 #==============================================================================================
 # Application of integration to compute Bessel functions
@@ -32,7 +32,8 @@ def bessel_trig(theta):
 for m_val in range(0, 3):
     j_vals = (
         []
-    )  # initialize list which will contain values of bessel func and reinitialize after each loop over m
+    )  # initialize list which will
+    # contain values of bessel func and reinitialize after each loop over m
     for xval in x_vals:
         # performing integration over values of x from 0 to 20 for fixed m
         jval = (1 / np.pi) * function_integrationsimp(bessel_trig, 0, np.pi, npoints)
