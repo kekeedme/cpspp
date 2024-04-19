@@ -2,10 +2,10 @@
 integrals.py file"""
 #Don't necessarily run all the programs if you don't need them, it will make the program slow
 import numpy as np
-from src.useful_math_functions.integrals import function_integrationtz
-from src.useful_math_functions.integrals import adaptivetz
-from src.useful_math_functions.integrals import Rombergtz
-from src.useful_math_functions.integrals import gaussquad
+#from src.useful_math_functions.integrals import function_integrationtz
+#from src.useful_math_functions.integrals import adaptivetz
+#from src.useful_math_functions.integrals import rombergtz
+#from src.useful_math_functions.integrals import gaussquad
 from src.useful_math_functions.integrals import function_integrationsimp
 from pylab import plot, show, imshow, xlim, legend, title, hot, show
 
