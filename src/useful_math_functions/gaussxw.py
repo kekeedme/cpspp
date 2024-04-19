@@ -1,3 +1,5 @@
+"""This file of functions written by Mark Newman calculates the roots to the Nth
+ legendre polynomial to be used in Gauss quadrature"""
 ######################################################################
 #
 # Functions to calculate integration points and weights for Gaussian
@@ -26,30 +28,31 @@
 
 from numpy import ones,copy,cos,tan,pi,linspace
 
-def gaussxw(N):
-
+def gaussxw(npoints):
+    """This function calculates the roots of the Nth legendre polynomial"""
     # Initial approximation to roots of the Legendre polynomial
-    a = linspace(3,4*N-1,N)/(4*N+2)
-    x = cos(pi*a+1/(8*N*N*tan(a)))
+    avalue = linspace(3,4*npoints-1,npoints)/(4*npoints+2)
+    xvalue = cos(pi*avalue+1/(8*npoints*npoints*tan(avalue)))
 
     # Find roots using Newton's method
     epsilon = 1e-15
     delta = 1.0
     while delta>epsilon:
-        p0 = ones(N,float)
-        p1 = copy(x)
-        for k in range(1,N):
-            p0,p1 = p1,((2*k+1)*x*p1-k*p0)/(k+1)
-        dp = (N+1)*(p0-x*p1)/(1-x*x)
-        dx = p1/dp
-        x -= dx
+        p0array = ones(npoints,float)
+        p1array = copy(xvalue)
+        for k in range(1,npoints):
+            p0array,p1array = p1array,((2*k+1)*xvalue*p1array-k*p0array)/(k+1)
+        dp = (npoints+1)*(p0array-xvalue*p1array)/(1-xvalue*xvalue)
+        dx = p1array/dp
+        xvalue -= dx
         delta = max(abs(dx))
 
     # Calculate the weights
-    w = 2*(N+1)*(N+1)/(N*N*(1-x*x)*dp*dp)
+    weights = 2*(npoints+1)*(npoints+1)/(npoints*npoints*(1-xvalue*xvalue)*dp*dp)
 
-    return x,w
+    return xvalue,weights
 
-def gaussxwab(N,a,b):
-    x,w = gaussxw(N)
-    return 0.5*(b-a)*x+0.5*(b+a),0.5*(b-a)*w
+def gaussxwab(npoints,aval,bval):
+    """This function remaps the x points and the weights in quadrature"""
+    xvals,weights = gaussxw(npoints)
+    return 0.5*(bval-aval)*xvals+0.5*(bval+aval),0.5*(bval-aval)*weights
