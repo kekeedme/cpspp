@@ -1,8 +1,7 @@
 """This file contains a series of functions to perform integral either on user-
 specified functions, or on data using different rules such as trapezoid, Simpson,
 adaptive-trapezoid, Romberg-trapezoid and Gauss quadrature"""
-
-import numpy as np
+from src.useful_math_functions.gaussxw import gaussxw
 
 
 def function_integrationtz(function, initp, endp, npoints):
@@ -181,7 +180,7 @@ def adaptivetz(function, avalue, bvalue, nslices, target_error):
     return integral_new, actual_error
 
 
-def Rombergtz(function, avalue, bvalue, nslices, target_error):
+def rombergtz(function, avalue, bvalue, nslices, target_error):
     """This function will perform the integration using Romberg trapezoid method
     it uses
     :param: function the function we are integrating
@@ -210,7 +209,8 @@ def Rombergtz(function, avalue, bvalue, nslices, target_error):
             function, avalue, bvalue, nslices
         )  # Calculate next integral with twice as many slices as before
         inte_list_i.append(integral_n)  # add to that new list
-        # loop that will carry out the calc to get higher Romberg terms from previous values of lists, since we already did m=1 we need to start at m=2
+        # loop that will carry out the calc to get higher Romberg terms from previous
+        # values of lists, since we already did m=1 we need to start at m=2
         for m in range(2, m_index + 1):
             # Calculating the R_i_m+1 term
             r_i_m_plus_one = inte_list_i[-1] + (
@@ -238,7 +238,6 @@ def gaussquad(function, avalue, bvalue, npoints):
 
     # needed from the gaussxw that calculates the weight and points from Gauss-Legendre
 
-    from src.useful_math_functions.gaussxw import gaussxw
     # for nth Legendre function. They are ARRAYS
     x_points, weights = gaussxw(npoints)
     # Remapping the array of points to suit our interval and therefore rescaling weights as well
