@@ -13,7 +13,7 @@ def invapotential(xval):
     """This function calculate the integrand
     math:1/sqrt(V(a)-V(x))
     :param: xval only the values of x integration"""
-    np.sqrt(8*MASS)* 1/(np.sqrt((amplitude**4)-(xval**4)))
+    return (np.sqrt(8*MASS) * 1/(np.sqrt((amplitude**4)-(xval**4))))
 #def period(amp):
     """This function calculates the period for the anharmonic oscillator
     for a given amplitude, using the potential defined above it takes
@@ -28,9 +28,9 @@ if __name__ == "__main__":
     MASS = 1 #defining the mass constant
     # we will integrate for a = 0, to a = 2, and make a plot
     period_list = []
-    amplitude_list = np.linspace(0.01,2,50)
+    amplitude_list = np.linspace(0.1,2,50)
     for amplitude in amplitude_list:
-        period_list.append(gaussquad(invapotential,0,2,20))
+        period_list.append(gaussquad(invapotential,0,amplitude,20))
     plot(amplitude_list,period_list)
     xlim(amplitude_list[0],amplitude_list[-1])
     ylim(period_list[0],period_list[-1])
