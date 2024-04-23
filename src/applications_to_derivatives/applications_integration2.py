@@ -2,8 +2,8 @@
 relevant physics calculations"""
 
 import numpy as np
-from src.useful_math_functions.integrals import gaussquad
 from pylab import plot, show, xlabel, ylabel, xlim, ylim, title
+from src.useful_math_functions.integrals import gaussquad
 
 # ================================================================================================
 # PERIOD of an anharmonic oscillator
