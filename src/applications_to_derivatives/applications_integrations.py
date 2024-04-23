@@ -4,6 +4,7 @@ integrals.py file"""
 # Don't necessarily run all the programs if you don't need them, it will make the program slow
 
 import numpy as np
+from pylab import plot, xlim, ylim, xlabel, ylabel, title, show
 
 # from src.useful_math_functions.integrals import function_integrationtz
 # from src.useful_math_functions.integrals import adaptivetz
@@ -11,7 +12,6 @@ import numpy as np
 from src.useful_math_functions.integrals import gaussquad
 
 # from src.useful_math_functions.integrals import function_integrationsimp
-from pylab import plot, xlim, ylim, xlabel, ylabel, title, show
 
 # hot, imshow,legend
 
