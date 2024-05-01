@@ -31,6 +31,7 @@ def energyrate(temperature):
     integral = gaussquad(integrand, 0, 1, 50)
     total_energyrate = pre_factor * integral
     return total_energyrate
+# ================================================================================================
 
 
 if __name__ == "__main__":
