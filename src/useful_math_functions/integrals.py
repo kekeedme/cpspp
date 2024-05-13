@@ -278,3 +278,30 @@ def gaussquad2d(function, avalue, bvalue, zval, npoints):
                 * function(mapped_x[i], mapped_x[k], zval)
             )
     return integral
+
+def gaussquad2_2d(function, avalue, bvalue, npoints):
+    """This function performs 2-dimensional integration using the Gaussian quadrature rule
+    :param: function the function we which to integrate
+    :param: avalue and bvalue the upper and lower bound of the interval of interest
+    :param: npoints which is the number of points required remember polynomial
+    :param: zval being a constant along the third direction of cartesian coordinate
+    need to be of degree 2N-1"""
+
+    # needed from the gaussxw that calculates the weight and points from Gauss-Legendre
+
+    # for nth Legendre function. They are ARRAYS
+    x_points, weights = gaussxw(npoints)
+    # Remapping the array of points to suit our interval and therefore rescaling weights as well
+    mapped_x = (0.5) * (bvalue - avalue) * x_points + 0.5 * (bvalue + avalue)
+    mapped_weights = 0.5 * (bvalue - avalue) * weights
+
+    # Calculate the integral
+    integral = 0.0
+    for k in range(npoints):
+        for i in range(npoints):
+            integral += (
+                mapped_weights[i]
+                * mapped_weights[k]
+                * function(mapped_x[i], mapped_x[k])
+            )
+    return integral
