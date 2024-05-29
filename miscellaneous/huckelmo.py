@@ -62,8 +62,8 @@ def makemolskeleton(molecule):
 
     # Calculating distances between carbon atoms and defining edges
     edges = []
-    for i in range(len(array1)):
-        for k in range(len(array1)):
+    for i,l in enumerate(array1):
+        for k,b in enumerate(array1):
             bond = np.linalg.norm(array1[i] - array1[k])
             if 0 < bond < 1.57:
                 edges.append([i, k])
@@ -105,9 +105,9 @@ def adjacencymatrix(vertices, edges):
         adjm[j][i] = 1
 
     # Making the network graph
-    G = nx.Graph()
-    G.add_edges_from(edges)
-    nx.draw_networkx(G, node_color="gray", edge_color="blue")
+    _G = nx.Graph()
+    _G.add_edges_from(edges)
+    nx.draw_networkx(_G, node_color="gray", edge_color="blue")
     # pos = nx.spectral_layout(G, dim =3)
     show()
     # since the above procedure makes a list of lists, we turn in into an array
@@ -356,4 +356,4 @@ if __name__ == "__main__":
      H                  1.78703954    2.63767811    0.00000000
      H                  2.14854632    0.81998373    0.00000000
      """
-    huckel(ALLYL)
+    huckel(BUCKY)
