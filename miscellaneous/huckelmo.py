@@ -1,19 +1,22 @@
-"""This file contains functions to parse a string of 3dim coordinates of atoms, make
-adjacency matrix akin to carbon backbone of molecules and diagonalize said matrix for application
+"""This file contains functions to parse a string of
+3dim coordinates of atoms, make adjacency matrix akin to carbon backbone of
+molecules and diagonalize said matrix for application
 in Huckel MO theory"""
 import sys
 
 import numpy as np
-import networkx as nx
+import networkx as nx  # pylint: disable=import-error
 from pylab import show, title, plot, ylabel, xlabel
 
 
 def makemolskeleton(molecule):
-    """This function will make the arrays necessary to construct the adjacency matrix and perform Huckel calc later
+    """This function will make the arrays necessary
+    to construct the adjacency matrix and perform Huckel calc later
     it takes
-    :param: the entire molecular specifications i.e. spin multiplicity, charge and cartesian coordinates of atoms
+    :param: the entire molecular specifications i.e. spin multiplicity,
+    charge and cartesian coordinates of atoms
     it returns an array of coordinates composed only of the carbon skeleton"""
-
+    # pylint: disable-msg=too-many-locals
     # Reading in molecular information and organizing
     coordinate_str = molecule.split(
         "\n"
@@ -24,39 +27,44 @@ def makemolskeleton(molecule):
         0
     )  # two pop statements to remove empty value and to remove charge and multiplicity entries
 
-    # Here, we go through the list of string coordinate and regrouped the strings so that they are only separated by single space
+    # Here, we go through the list of string coordinate and regrouped the strings so
+    # that they are only separated by single space
     my_coord = []
     for items in coordinate_str:
-        coords = " ".join(items.split())  # statement which takes in
+        coords = " ".join(items.split()) # statement which makes each string separated by singspace
         my_coord.append(coords)
 
     # This line is to remove the strings with the Hydrogen coordinates: it makes a list
     coord_list_nohydrogen = [line for line in my_coord if not line.startswith("H")]
     coord_list_nohydrogen.pop(
         -1
-    )  # Here we remove an empty value that is created at the end of list from the previous procedure
+    )  # Here we remove an empty value that is created at the end of list
+    # from the previous procedure
 
-    # We now make two zero-filled arrays to contain the coordinates of the carbon atoms, we will use them to calculate distance and define edges
+    # We now make a zero-filled array to contain the coordinates of the carbon atoms,
+    # we will use it to calculate distance and define edges
     array1 = np.zeros(
         (len(coord_list_nohydrogen), 3)
-    )  # making it a n by 3 array where n is the number of carbon atoms in the molecule
-    # array2 = np.zeros((len(coord_list_noH),3))
+    )  # making it an n by 3 array where n is the number of carbon atoms in the molecule
 
-    # Here we are stripping the letter C and then converting the remaining number strings into floats to be put in array1 and array2
+
+    # Here we are stripping the letter C and then converting the remaining number strings
+    # into floats to be put in array1
     count = (
         0  # initialize this value to keep track of the rows we are filling on each loop
     )
     for z in coord_list_nohydrogen:
-        new = z.strip(
+        nocarbon = z.strip(
             "C"
-        )  # remove the C string from all the strings in the sansh2 list
-        lists = new.split(
+        )  # remove the C string from all the strings in the coord_list_nohydrogen list
+        lists = nocarbon.split(
             " "
-        )  # make a list out the new string, where each value will be separated everytime we find a space in each string
+        )  # make a list out the new string, where each value will be separated everytime we find
+        # a space in each string
         lists.pop(0)  # remove the inital empty space in the list
-        # print(lists)
+
         for k in range(3):
-            array1[count, k] = lists[k]  # this line fills in the coloumn values
+            array1[count, k] = lists[k]  # this line fills in the column values
 
         count += 1
 
@@ -64,13 +72,13 @@ def makemolskeleton(molecule):
     edges = []
     for i,l in enumerate(array1):
         for k,b in enumerate(array1):
-            bond = np.linalg.norm(array1[i] - array1[k])
+            bond = np.linalg.norm(l - b)
             if 0 < bond < 1.57:
                 edges.append([i, k])
 
-    # Making the vertex
+    # Making the vertices
     vertices = []
-    for i in range(len(array1)):
+    for i,k in enumerate(array1):
         vertices.append(i + 1)
 
     return vertices, edges
@@ -79,18 +87,22 @@ def makemolskeleton(molecule):
 def adjacencymatrix(vertices, edges):
     """This function creates an adjacency matrix to be used for Huckel calculation
     and also makes a graph using networkx
-    :param: vertices which the list of vertices in the molecule as obtain from function makemolskeleton
-    :param: edges which are lists of lists of atoms connected to one another: obtain from the makemolskeleton function
+    :param: vertices which the list of vertices in the molecule as obtain from function
+    makemolskeleton
+    :param: edges which are lists of lists of atoms connected
+    to one another: obtain from the makemolskeleton function
     """
     number_vertices = len(vertices)
     adjm = []  # create an empty list, which will become a list of lists
     while len(adjm) < number_vertices:
         temp = (
             []
-        )  # makes an empty list which will be used to turn adjm into a list of list of the appropriate size
+        )  # makes an empty list which will be used to turn adjm into a
+        # list of list of the appropriate size
         for i in range(
             number_vertices
-        ):  # add nzeros to the temp list and add temp list to adjm, redo until adjm is as long as n vertices
+        ):  # add nzeros to the temp list and add temp list to adjm,
+            # redo until adjm is as long as n vertices
             temp.append(0)
         adjm.append(temp)
 
@@ -105,12 +117,12 @@ def adjacencymatrix(vertices, edges):
         adjm[j][i] = 1
 
     # Making the network graph
-    _G = nx.Graph()
-    _G.add_edges_from(edges)
-    nx.draw_networkx(_G, node_color="gray", edge_color="blue")
+    _g = nx.Graph()
+    _g.add_edges_from(edges)
+    nx.draw_networkx(_g, node_color="gray", edge_color="blue")
     # pos = nx.spectral_layout(G, dim =3)
     show()
-    # since the above procedure makes a list of lists, we turn in into an array
+    # since the above procedure makes a list of lists, we turn in into an array using np.asarray
     adjm = np.asarray(adjm)
     return adjm
 
@@ -120,12 +132,13 @@ def huckel(coordinates):
     the 3D coordinates of each atom are provided
     it will make function calls to makemolskeleton(molecule) and also adjacency(vertex,edge)
     :param: coordinates 3D coordinates of atoms as obtained and
-    "cleaned up" from a 3D molecular drawing software such as g16 or Avogadro
+    "cleaned up" from a 3D molecular drawing software such as gview or Avogadro
     """
 
-    myfile = open("huckel_results.txt", "w")  # file to save results later
-    # Calling makemolskeleton(molecule)
+    myfile= open("huckel_results.txt", "w",encoding="utf-8")
+    # file to save results later
 
+    # Calling makemolskeleton(molecule)
     vertices, edges = makemolskeleton(coordinates)
 
     # calling function to make adjacency matrix
@@ -137,25 +150,20 @@ def huckel(coordinates):
     # sorting eigenvalues in order of ascending energies
     sorted_eigenvals = np.sort(eigenvals)
 
-    # Calculating the energies in ev for ALPHA = -11.2 ev and BETA = -.7 ev
-    # ALPHA =-11.2
-    # BETA = -2.5
-    # state_energy = [ALPHA + i * BETA for i in reversed_eigenvals]
-
     # counting instances of degeneracies
     degen_states = []
-    for i in range(len(sorted_eigenvals)):
-        for k in range(len(sorted_eigenvals)):
+    for i,l in enumerate(sorted_eigenvals):
+        for k,j in enumerate(sorted_eigenvals):
             if i == k:
                 continue
-            if abs(sorted_eigenvals[i] - sorted_eigenvals[k]) <= 10 ** (
+            if abs(l - j) <= 10 ** (
                 -12
             ):  # defining a treshold to determine that values are equal to one another
                 degen_states.append(i)
 
     # making plot
     xvals = [
-        i for i in range(len(vertices))
+        i for i,k in enumerate(vertices)
     ]  # the xvals are simply the number of p orbital basis functions
     plot(xvals, sorted_eigenvals, "b.")
     xlabel("State number")
@@ -165,7 +173,7 @@ def huckel(coordinates):
 
     np.set_printoptions(
         threshold=sys.maxsize
-    )  # to prevent truncation of eigenvals and eigenvecs
+    )  # to prevent truncation of eigenvals and eigenvecs in the file
 
     # writing data to file
     print(
@@ -179,7 +187,8 @@ def huckel(coordinates):
     )
     print("The degenerate states are ", np.unique(degen_states), "\n", file=myfile)
     print(
-        "You can also calculate the pi energy using alpha and beta values of your choosing, using:\n ALPHA + eigenval "
+        "You can also calculate the pi energy using alpha and beta values of your choosing, "
+        "using:\n ALPHA + eigenval "
         "* BETA",
         file=myfile,
     )
@@ -356,4 +365,4 @@ if __name__ == "__main__":
      H                  1.78703954    2.63767811    0.00000000
      H                  2.14854632    0.81998373    0.00000000
      """
-    huckel(BUCKY)
+    huckel(PYRENE)
